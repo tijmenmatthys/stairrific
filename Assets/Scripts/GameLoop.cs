@@ -59,9 +59,15 @@ public class GameLoop : MonoBehaviour
         _deck.RemoveTile();
     }
 
-    private void SetMouseToOrigin()
+    public void OnSelectPreviousTile(InputAction.CallbackContext context)
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.lockState = CursorLockMode.None;
+        if (!context.performed) return;
+        _deck.SelectPreviousTile();
+    }
+
+    public void OnSelectNextTile(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        _deck.SelectNextTile();
     }
 }
