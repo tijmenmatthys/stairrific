@@ -16,6 +16,6 @@ public class BoardView : MonoBehaviour
             _tiles.Add(position, newTile.GetComponent<TileView>());
         }
         _tiles[position].SetPosition(position.WorldPosition2D);
-        _tiles[position].UpdateVisuals(tile);
+        _tiles[position].SetVisuals(tile);
     }
 }

@@ -15,13 +15,12 @@ public class TileView : MonoBehaviour
 
     private void Start()
     {
-        _sides[HexDirection.Left].SetActive(false);
     }
 
     public void SetPosition(Vector2 position)
         => transform.position = position;
 
-    public void UpdateVisuals(Tile tile)
+    public void SetVisuals(Tile tile)
     {
         _door.SetActive(tile.HasDoor);
         foreach (HexDirection direction in _sides.Keys)
