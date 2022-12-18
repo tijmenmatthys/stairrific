@@ -60,14 +60,18 @@ public class GameLoop : MonoBehaviour
 
         var mousePosition = Mouse.current.position.ReadValue();
         _pointerPosition = _camera.ScreenToWorldPoint(mousePosition);
+
+        if (_board.TryGetNextPlacePosition(_pointerPosition, out Hex nextPlacePosition))
+            _boardView.HighlightNextPlace(nextPlacePosition);
     }
 
     public void OnPlaceTile(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
         if (_deck.TileCount <= 0) return;
+        if (!_board.TryGetNextPlacePosition(_pointerPosition, out Hex nextPlacePosition)) return;
 
-        _board.AddTile(Hex.FromWorldPosition(_pointerPosition), _deck.SelectedTile);
+        _board.AddTile(nextPlacePosition, _deck.SelectedTile);
         _deck.RemoveTile();
     }
 

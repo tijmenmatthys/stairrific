@@ -39,7 +39,8 @@ public class TileView : MonoBehaviour
     public void HighlightNextPlace()
     {
         _content.SetActive(true);
-        _highlight.SetActive(true);
+        _content.transform.localScale = Vector3.one * .7f;
+        _highlight.SetActive(false);
     }
 
     private GameObject Side(Hex direction)

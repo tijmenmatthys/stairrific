@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Board
@@ -9,6 +10,7 @@ public class Board
 
     private Dictionary<Hex, Tile> _tiles = new Dictionary<Hex,Tile>();
     private List<Hex> _validPositions = new List<Hex>();
+    private List<Vector2> _validWorldPositions = new List<Vector2>();
 
     public List<Hex> ValidPositions => _validPositions;
 
@@ -36,7 +38,27 @@ public class Board
             }
             if (success) validPositions.Add(position);
         }
+
         _validPositions = validPositions;
+        _validWorldPositions = validPositions.Select(hex => hex.WorldPosition2D).ToList();
+    }
+
+    public bool TryGetNextPlacePosition(Vector2 pointerPosition, out Hex nextPlacePosition)
+    {
+        nextPlacePosition = Hex.zero;
+        if (_validPositions.Count == 0) return false;
+
+        float minDistance = float.MaxValue;
+        foreach (Vector2 position in _validWorldPositions)
+        {
+            float distance = Vector2.Distance(position, pointerPosition);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nextPlacePosition = Hex.FromWorldPosition(position);
+            }
+        }
+        return true;
     }
 
     private List<Hex> GetPerimeter()
