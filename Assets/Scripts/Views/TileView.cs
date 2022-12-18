@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class HexDirectionGameObjectDictionary
-    : SerializableDictionary<HexDirection, GameObject>
+public class HexEnumToGameObjectDictionary
+    : SerializableDictionary<HexEnum, GameObject>
 { }
 
 public class TileView : MonoBehaviour
 {
-    [SerializeField] private HexDirectionGameObjectDictionary _sides;
+    [SerializeField] private HexEnumToGameObjectDictionary _sides;
     [SerializeField] private GameObject _door;
     [SerializeField] private GameObject _highlight;
     [SerializeField] private GameObject _content;
 
-    private void Start()
+    private void Awake()
     {
         _highlight.SetActive(false);
     }
@@ -26,11 +26,11 @@ public class TileView : MonoBehaviour
     public void SetVisuals(Tile tile)
     {
         _door.SetActive(tile.HasDoor);
-        foreach (HexDirection direction in _sides.Keys)
-            _sides[direction].SetActive(tile.HasConnection[direction]);
+        foreach (Hex direction in Hex.directions)
+            Side(direction).SetActive(tile.HasConnection[direction]);
     }
 
-    public void HighlightPlacePossible()
+    public void HighlightValid()
     {
         _content.SetActive(false);
         _highlight.SetActive(true);
@@ -41,5 +41,8 @@ public class TileView : MonoBehaviour
         _content.SetActive(true);
         _highlight.SetActive(true);
     }
+
+    private GameObject Side(Hex direction)
+        => _sides[direction.ToEnum()];
 }
 

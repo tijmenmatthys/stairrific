@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum HexDirection
+public enum HexEnum
 {
     Left,
     Right,
@@ -72,7 +72,30 @@ public struct Hex
     public Hex RotateRight() => new Hex(-r, -s);
     public Hex RotateLeftAround(Hex center) => (this - center).RotateLeft() + center;
     public Hex RotateRightAround(Hex center) => (this - center).RotateRight() + center;
+    public HexEnum ToEnum()
+    {
+        if (this == left) return HexEnum.Left;
+        if (this == right) return HexEnum.Right;
+        if (this == upLeft) return HexEnum.UpLeft;
+        if (this == upRight) return HexEnum.UpRight;
+        if (this == downLeft) return HexEnum.DownLeft;
+        if (this == downRight) return HexEnum.DownRight;
 
+        Debug.LogWarning($"Trying to execute ToEnum on {this}, which is not a direction, taking default Left");
+        return HexEnum.Left;
+    }
+
+    public static Hex FromEnum(HexEnum direction)
+    {
+        if (direction == HexEnum.Left) return left;
+        if (direction == HexEnum.Right) return right;
+        if (direction == HexEnum.UpLeft) return upLeft;
+        if (direction == HexEnum.UpRight) return upRight;
+        if (direction == HexEnum.DownLeft) return downLeft;
+        if (direction == HexEnum.DownRight) return downRight;
+
+        return zero;
+    }
     public static Hex FromWorldPosition(Vector3 worldPosition)
     {
         float q = (Mathf.Sqrt(3) / 3 * worldPosition.x - 1f / 3 * worldPosition.z) / Spacing;
@@ -84,17 +107,6 @@ public struct Hex
         float q = (Mathf.Sqrt(3) / 3 * worldPosition.x - 1f / 3 * worldPosition.y) / Spacing;
         float r = 2f / 3 * worldPosition.y / Spacing;
         return Round(q, r);
-    }
-    public static Hex FromDirection(HexDirection direction)
-    {
-        if (direction == HexDirection.Left) return left;
-        if (direction == HexDirection.Right) return right;
-        if (direction == HexDirection.UpLeft) return upLeft;
-        if (direction == HexDirection.UpRight) return upRight;
-        if (direction == HexDirection.DownLeft) return downLeft;
-        if (direction == HexDirection.DownRight) return downRight;
-
-        return zero;
     }
     public static int Distance(Hex a, Hex b) => (a - b).Length;
     public static Hex[] Line(Hex startPosition, Hex direction, int length)
@@ -120,6 +132,8 @@ public struct Hex
     public static readonly Hex diagonalDownLeft = new Hex(-1, -1);
     public static readonly Hex diagonalDown = new Hex(1, -2);
     public static readonly Hex diagonalDownRight = new Hex(2, -1);
+
+    public static readonly Hex[] directions = zero.Neighbours;
 
     public override bool Equals(object obj)
     {

@@ -1,4 +1,4 @@
 using UnityEditor;
 
-[CustomPropertyDrawer(typeof(HexDirectionGameObjectDictionary))]
+[CustomPropertyDrawer(typeof(HexEnumToGameObjectDictionary))]
 public class CustomSerializableDictionaryPropertyDrawer : SerializableDictionaryPropertyDrawer { }

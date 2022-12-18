@@ -19,9 +19,14 @@ public class GameLoop : MonoBehaviour
     void Start()
     {
         _camera = Camera.main;
-        //SetMouseToOrigin();
+
         InitViews();
         InitModels();
+
+        _board.AddTile(Hex.zero, new Tile(true));
+        _board.AddTile(new Hex(-3, -1), new Tile(true));
+        _board.AddTile(new Hex(2, 2), new Tile(true));
+        _deck.AddTiles(_startTileCount);
     }
 
     private void InitViews()
@@ -38,8 +43,15 @@ public class GameLoop : MonoBehaviour
         _deck = new Deck(_deckView.SelectableTileCount);
         _deck.TileAdded += _deckView.OnTileAdded;
         _deck.TileRemoved += _deckView.OnTileRemoved;
-        _deck.TileSelected += _deckView.OnTileSelected;
-        _deck.AddTiles(_startTileCount);
+        _deck.TileSelected += OnTileSelected;
+    }
+
+    public void OnTileSelected(int index)
+    {
+        _board.UpdateValidPositions(_deck.SelectedTile);
+        _boardView.HighlightValid(_board.ValidPositions, _deck.SelectedTile);
+        _deckView.OnTileSelected(index);
+
     }
 
     public void OnMovePointer(InputAction.CallbackContext context)

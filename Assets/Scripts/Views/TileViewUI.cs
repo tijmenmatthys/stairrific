@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TileViewUI : MonoBehaviour
 {
-    [SerializeField] private HexDirectionGameObjectDictionary _sides;
+    [SerializeField] private HexEnumToGameObjectDictionary _sides;
 
     private RectTransform _rectTransform;
 
@@ -22,8 +22,8 @@ public class TileViewUI : MonoBehaviour
 
     public void SetVisuals(Tile tile)
     {
-        foreach (HexDirection direction in _sides.Keys)
-            _sides[direction].SetActive(tile.HasConnection[direction]);
+        foreach (Hex direction in Hex.directions)
+            Side(direction).SetActive(tile.HasConnection[direction]);
     }
 
     public void Select()
@@ -35,5 +35,7 @@ public class TileViewUI : MonoBehaviour
     {
         transform.localScale = Vector3.one;
     }
+    private GameObject Side(Hex direction)
+        => _sides[direction.ToEnum()];
 }
 
