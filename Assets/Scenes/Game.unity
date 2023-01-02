@@ -253,7 +253,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2617d9eb1dfa625448a9b43a9f3880f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TilePrefab: {fileID: 902104485081956269, guid: 328ac0a8bb549b948b61524b1abb4a8c, type: 3}
+  _travellerPrefab: {fileID: 902104485081956269, guid: fdfaa377f1d95c74c8dc955a9e6d27c5, type: 3}
+  _tilePrefab: {fileID: 902104485081956269, guid: 328ac0a8bb549b948b61524b1abb4a8c, type: 3}
 --- !u!4 &402249875
 Transform:
   m_ObjectHideFlags: 0
@@ -424,7 +425,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 0000000027e19c1b
+  m_ApplyToSortingLayers: 0000000027e19c1b5bff7a36
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -596,6 +597,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startTileCount: 100
+  _travellerMoveInterval: 1
+  _travellerSpawnInterval: 3
 --- !u!4 &1326535566
 Transform:
   m_ObjectHideFlags: 0

@@ -44,3 +44,6 @@ TagManager:
   - name: Tile
     uniqueID: 463266087
     locked: 0
+  - name: Traveller
+    uniqueID: 914030427
+    locked: 0

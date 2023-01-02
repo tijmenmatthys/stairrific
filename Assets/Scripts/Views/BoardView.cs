@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class BoardView : MonoBehaviour
 {
-    [SerializeField] private GameObject TilePrefab;
+    [SerializeField] private GameObject _travellerPrefab;
+    [SerializeField] private GameObject _tilePrefab;
 
+    private List<TravellerView> _travellers = new List<TravellerView>();
     private Dictionary<Hex, TileView> _tiles = new Dictionary<Hex, TileView>();
     private Dictionary<Hex, TileView> _highLightedTiles = new Dictionary<Hex, TileView>();
 
@@ -14,11 +16,28 @@ public class BoardView : MonoBehaviour
     {
         if (!_tiles.ContainsKey(position))
         {
-            GameObject newTile = Instantiate(TilePrefab, gameObject.transform);
+            GameObject newTile = Instantiate(_tilePrefab, gameObject.transform);
             _tiles.Add(position, newTile.GetComponent<TileView>());
         }
         _tiles[position].SetPosition(position.WorldPosition2D);
         _tiles[position].SetVisuals(tile);
+    }
+
+    public void OnTravellerAdded(Traveller traveller)
+    {
+        GameObject newTraveller = Instantiate(_travellerPrefab, gameObject.transform);
+        var travellerView = newTraveller.GetComponent<TravellerView>();
+        travellerView.SetStartPosition(traveller.WorldPosition);
+        _travellers.Add(travellerView);
+
+        traveller.Moved += travellerView.SetPosition;
+        traveller.StartedMoving += travellerView.SetMoving;
+        traveller.StartedWaiting += travellerView.SetWaiting;
+    }
+
+    public void OnTravellerRemoved(Traveller traveller)
+    {
+        // todo
     }
 
     public void HighlightValid(List<Hex> validPositions, Tile nextTile)
@@ -29,7 +48,7 @@ public class BoardView : MonoBehaviour
 
         foreach (Hex position in validPositions)
         {
-            TileView highlightTile = Instantiate(TilePrefab, gameObject.transform).GetComponent<TileView>();
+            TileView highlightTile = Instantiate(_tilePrefab, gameObject.transform).GetComponent<TileView>();
             highlightTile.SetPosition(position.WorldPosition2D);
             highlightTile.SetVisuals(nextTile);
             highlightTile.HighlightValid();

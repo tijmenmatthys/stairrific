@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,12 +7,16 @@ using UnityEngine.InputSystem;
 public class GameLoop : MonoBehaviour
 {
     [SerializeField] private int _startTileCount = 10;
+    [SerializeField] private float _travellerMoveInterval = 2f;
+    [SerializeField] private float _travellerSpawnInterval = 4f;
 
     private BoardView _boardView;
     private DeckView _deckView;
 
     private Board _board;
     private Deck _deck;
+    private TravellerMovement _travellerMovement;
+    private TravellerNavigation _travellerNavigation;
 
     private Vector2 _pointerPosition = Vector2.zero;
     private Camera _camera;
@@ -27,6 +32,33 @@ public class GameLoop : MonoBehaviour
         _board.AddTile(new Hex(-3, -1), new Tile(true));
         _board.AddTile(new Hex(2, 2), new Tile(true));
         _deck.AddTiles(_startTileCount);
+
+        StartCoroutine(SpawnTravellers());
+        StartCoroutine(MoveTravellers());
+    }
+
+    private IEnumerator SpawnTravellers()
+    {
+        while (true)
+        {
+            Hex source = _board.GetRandomDoor();
+            Hex target;
+            do { target = _board.GetRandomDoor(); }
+            while (target == source);
+            _travellerMovement.AddTraveller(source, target);
+
+            yield return new WaitForSeconds(_travellerSpawnInterval);
+        }
+    }
+
+    private IEnumerator MoveTravellers()
+    {
+        while (true)
+        {
+            _travellerMovement.Move();
+
+            yield return new WaitForSeconds(_travellerMoveInterval);
+        }
     }
 
     private void InitViews()
@@ -39,11 +71,18 @@ public class GameLoop : MonoBehaviour
     {
         _board = new Board();
         _board.TileAdded += _boardView.OnTileAdded;
+        _board.TileAdded += (_, _)
+            => _travellerNavigation.UpdateShortestPaths(_board.Tiles, _board.DoorPositions);
 
         _deck = new Deck(_deckView.SelectableTileCount);
         _deck.TileAdded += _deckView.OnTileAdded;
         _deck.TileRemoved += _deckView.OnTileRemoved;
         _deck.TileSelected += OnTileSelected;
+
+        _travellerNavigation = new TravellerNavigation();
+        _travellerMovement = new TravellerMovement(_travellerNavigation);
+        _travellerMovement.TravellerAdded += _boardView.OnTravellerAdded;
+        _travellerMovement.TravellerRemoved += _boardView.OnTravellerRemoved;
     }
 
     public void OnTileSelected(int index)

@@ -3,20 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Board
 {
     public event Action<Hex, Tile> TileAdded;
 
     private Dictionary<Hex, Tile> _tiles = new Dictionary<Hex,Tile>();
+    private List<Hex> _doorPositions = new List<Hex>();
     private List<Hex> _validPositions = new List<Hex>();
     private List<Vector2> _validWorldPositions = new List<Vector2>();
 
     public List<Hex> ValidPositions => _validPositions;
+    public List<Hex> DoorPositions => _doorPositions;
+    public Dictionary<Hex, Tile> Tiles => _tiles;
+
+    public Hex GetRandomDoor()
+    {
+        int index = Random.Range(0, _doorPositions.Count);
+        return _doorPositions[index];
+    }
 
     public void AddTile(Hex position, Tile tile)
     {
         _tiles[position] = tile;
+        if (tile.HasDoor)
+            _doorPositions.Add(position);
         TileAdded?.Invoke(position, tile);
     }
 
