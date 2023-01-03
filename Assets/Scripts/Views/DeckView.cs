@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class DeckView : MonoBehaviour
 {
+    public event Action<int> SelectTile;
+
     [SerializeField] private int _visibleTileCount = 5;
     [SerializeField] private int _selectableTileCount = 5;
     [SerializeField] private GameObject _tilePrefab;
@@ -15,10 +17,14 @@ public class DeckView : MonoBehaviour
 
     public int SelectableTileCount => _selectableTileCount;
 
+    public void OnClickTile(TileViewUI tileView)
+        => SelectTile?.Invoke(_tileViews.IndexOf(tileView));
+
     public void OnTileAdded(Tile tile)
     {
         var tileView = Instantiate(_tilePrefab, transform).GetComponent<TileViewUI>();
         _tileViews.Add(tileView);
+        tileView.DeckView = this;
         tileView.SetVisuals(tile);
         SetPosition(tileView, _tileViews.Count - 1);
     }

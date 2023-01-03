@@ -81,6 +81,7 @@ public class GameLoop : MonoBehaviour
         _deck.TileAdded += _deckView.OnTileAdded;
         _deck.TileRemoved += _deckView.OnTileRemoved;
         _deck.TileSelected += OnTileSelected;
+        _deckView.SelectTile += _deck.SelectTile;
 
         _travellerNavigation = new TravellerNavigation();
         _travellerMovement = new TravellerMovement(_travellerNavigation);
@@ -110,6 +111,7 @@ public class GameLoop : MonoBehaviour
     public void OnPlaceTile(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
+        if (IsMouseAboveUI()) return;
         if (_deck.TileCount <= 0) return;
         if (!_board.TryGetNextPlacePosition(_pointerPosition, out Hex nextPlacePosition)) return;
 
@@ -134,5 +136,11 @@ public class GameLoop : MonoBehaviour
     {
         if (!context.performed) return;
         _deck.SelectNextTile();
+    }
+
+    private bool IsMouseAboveUI()
+    {
+        var viewportPosition = _camera.WorldToViewportPoint(_pointerPosition);
+        return viewportPosition.x < .2;
     }
 }

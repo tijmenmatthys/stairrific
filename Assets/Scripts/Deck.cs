@@ -68,4 +68,10 @@ public class Deck
         if (previousIndex >= 0)
             SelectedTileIndex = previousIndex;
     }
+    public void SelectTile(int index)
+    {
+        if (index < 0 || index >= _selectableTileCount) return;
+
+        SelectedTileIndex = index;
+    }
 }

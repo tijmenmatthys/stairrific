@@ -9,10 +9,14 @@ public class TileViewUI : MonoBehaviour
 
     private RectTransform _rectTransform;
 
+    public DeckView DeckView { get; set; }
+
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
     }
+
+    public void OnClick() => DeckView.OnClickTile(this);
 
     public void SetPosition(float minY, float maxY)
     {
