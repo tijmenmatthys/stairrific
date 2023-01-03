@@ -55,6 +55,8 @@ public class GameLoop : MonoBehaviour
             _travellerMovement.AddTraveller(source, target);
 
             yield return new WaitForSeconds(_travellerSpawnInterval);
+
+            _board.AddDoor();
         }
     }
 

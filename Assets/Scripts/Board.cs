@@ -43,6 +43,14 @@ public class Board
         return true;
     }
 
+    public void AddDoor()
+    {
+        List<Hex> validSpawnPositions = GetPerimeter(1);
+        int index = Random.Range(0, validSpawnPositions.Count);
+        Hex position = validSpawnPositions[index];
+        AddTile(position, new Tile(true));
+    }
+
     public void UpdateValidPositions(Tile nextTile)
     {
         List<Hex> perimeter = GetPerimeter();
@@ -84,10 +92,21 @@ public class Board
         return true;
     }
 
-    private List<Hex> GetPerimeter()
+    private List<Hex> GetPerimeter(int gap = 0)
+    {
+        List<Hex> existing = new List<Hex>(_tiles.Keys);
+        List<Hex> perimeter = new List<Hex>();
+        for (int i = 0; i < gap + 1; i++)
+        {
+            existing.AddRange(perimeter);
+            perimeter = GetPerimeter(existing);
+        }
+        return perimeter;
+    }
+
+    private List<Hex> GetPerimeter(List<Hex> existing)
     {
         List<Hex> perimeter = new List<Hex>();
-        List<Hex> existing = new List<Hex>(_tiles.Keys);
         foreach (Hex tile in existing)
             foreach (Hex neighbour in tile.Neighbours)
             {
