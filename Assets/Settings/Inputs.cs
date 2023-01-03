@@ -55,6 +55,15 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""RemoveTile"",
+                    ""type"": ""Button"",
+                    ""id"": ""4ecc6d96-ab65-4bbe-9fa3-d231a69bb6f3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""SelectPreviousTile"",
                     ""type"": ""Button"",
                     ""id"": ""0b82e7a9-98bf-44c9-8111-e3c939712a29"",
@@ -335,6 +344,28 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""SelectNextTile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""069b4bc5-9764-4d8a-9892-9699cc6ca868"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""RemoveTile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca48211b-6ef5-4387-ac3f-55136c6b9447"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""RemoveTile"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -925,6 +956,7 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
         m_Player_MovePointer = m_Player.FindAction("MovePointer", throwIfNotFound: true);
         m_Player_PanCamera = m_Player.FindAction("PanCamera", throwIfNotFound: true);
         m_Player_PlaceTile = m_Player.FindAction("PlaceTile", throwIfNotFound: true);
+        m_Player_RemoveTile = m_Player.FindAction("RemoveTile", throwIfNotFound: true);
         m_Player_SelectPreviousTile = m_Player.FindAction("SelectPreviousTile", throwIfNotFound: true);
         m_Player_SelectNextTile = m_Player.FindAction("SelectNextTile", throwIfNotFound: true);
         // UI
@@ -1001,6 +1033,7 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MovePointer;
     private readonly InputAction m_Player_PanCamera;
     private readonly InputAction m_Player_PlaceTile;
+    private readonly InputAction m_Player_RemoveTile;
     private readonly InputAction m_Player_SelectPreviousTile;
     private readonly InputAction m_Player_SelectNextTile;
     public struct PlayerActions
@@ -1010,6 +1043,7 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
         public InputAction @MovePointer => m_Wrapper.m_Player_MovePointer;
         public InputAction @PanCamera => m_Wrapper.m_Player_PanCamera;
         public InputAction @PlaceTile => m_Wrapper.m_Player_PlaceTile;
+        public InputAction @RemoveTile => m_Wrapper.m_Player_RemoveTile;
         public InputAction @SelectPreviousTile => m_Wrapper.m_Player_SelectPreviousTile;
         public InputAction @SelectNextTile => m_Wrapper.m_Player_SelectNextTile;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1030,6 +1064,9 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                 @PlaceTile.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlaceTile;
                 @PlaceTile.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlaceTile;
                 @PlaceTile.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlaceTile;
+                @RemoveTile.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveTile;
+                @RemoveTile.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveTile;
+                @RemoveTile.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveTile;
                 @SelectPreviousTile.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSelectPreviousTile;
                 @SelectPreviousTile.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSelectPreviousTile;
                 @SelectPreviousTile.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSelectPreviousTile;
@@ -1049,6 +1086,9 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                 @PlaceTile.started += instance.OnPlaceTile;
                 @PlaceTile.performed += instance.OnPlaceTile;
                 @PlaceTile.canceled += instance.OnPlaceTile;
+                @RemoveTile.started += instance.OnRemoveTile;
+                @RemoveTile.performed += instance.OnRemoveTile;
+                @RemoveTile.canceled += instance.OnRemoveTile;
                 @SelectPreviousTile.started += instance.OnSelectPreviousTile;
                 @SelectPreviousTile.performed += instance.OnSelectPreviousTile;
                 @SelectPreviousTile.canceled += instance.OnSelectPreviousTile;
@@ -1214,6 +1254,7 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
         void OnMovePointer(InputAction.CallbackContext context);
         void OnPanCamera(InputAction.CallbackContext context);
         void OnPlaceTile(InputAction.CallbackContext context);
+        void OnRemoveTile(InputAction.CallbackContext context);
         void OnSelectPreviousTile(InputAction.CallbackContext context);
         void OnSelectNextTile(InputAction.CallbackContext context);
     }

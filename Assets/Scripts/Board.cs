@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 public class Board
 {
     public event Action<Hex, Tile> TileAdded;
+    public event Action<Hex> TileRemoved;
 
     private Dictionary<Hex, Tile> _tiles = new Dictionary<Hex,Tile>();
     private List<Hex> _doorPositions = new List<Hex>();
@@ -30,6 +31,16 @@ public class Board
         if (tile.HasDoor)
             _doorPositions.Add(position);
         TileAdded?.Invoke(position, tile);
+    }
+
+    public bool RemoveTile(Hex position)
+    {
+        if (!_tiles.ContainsKey(position)) return false;
+        if (_tiles[position].HasDoor) return false;
+
+        _tiles.Remove(position);
+        TileRemoved?.Invoke(position);
+        return true;
     }
 
     public void UpdateValidPositions(Tile nextTile)

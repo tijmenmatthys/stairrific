@@ -73,6 +73,9 @@ public class GameLoop : MonoBehaviour
         _board.TileAdded += _boardView.OnTileAdded;
         _board.TileAdded += (_, _)
             => _travellerNavigation.UpdateShortestPaths(_board.Tiles, _board.DoorPositions);
+        _board.TileRemoved += _boardView.OnTileRemoved;
+        _board.TileRemoved += (_)
+            => _travellerNavigation.UpdateShortestPaths(_board.Tiles, _board.DoorPositions);
 
         _deck = new Deck(_deckView.SelectableTileCount);
         _deck.TileAdded += _deckView.OnTileAdded;
@@ -112,6 +115,13 @@ public class GameLoop : MonoBehaviour
 
         _board.AddTile(nextPlacePosition, _deck.SelectedTile);
         _deck.RemoveTile();
+    }
+
+    public void OnRemoveTile(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+
+        _board.RemoveTile(Hex.FromWorldPosition(_pointerPosition));
     }
 
     public void OnSelectPreviousTile(InputAction.CallbackContext context)

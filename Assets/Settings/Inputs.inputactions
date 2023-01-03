@@ -33,6 +33,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "RemoveTile",
+                    "type": "Button",
+                    "id": "4ecc6d96-ab65-4bbe-9fa3-d231a69bb6f3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "SelectPreviousTile",
                     "type": "Button",
                     "id": "0b82e7a9-98bf-44c9-8111-e3c939712a29",
@@ -313,6 +322,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "SelectNextTile",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "069b4bc5-9764-4d8a-9892-9699cc6ca868",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "RemoveTile",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ca48211b-6ef5-4387-ac3f-55136c6b9447",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "RemoveTile",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

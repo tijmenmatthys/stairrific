@@ -23,6 +23,14 @@ public class BoardView : MonoBehaviour
         _tiles[position].SetVisuals(tile);
     }
 
+    public void OnTileRemoved(Hex position)
+    {
+        Destroy(_tiles[position].gameObject);
+        _tiles.Remove(position);
+        if (_highLightedTiles.ContainsKey(position))
+            _highLightedTiles.Remove(position);
+    }
+
     public void OnTravellerAdded(Traveller traveller)
     {
         GameObject newTraveller = Instantiate(_travellerPrefab, gameObject.transform);
