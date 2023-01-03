@@ -32,7 +32,7 @@ public class TileViewUI : MonoBehaviour
 
     public void Select()
     {
-        transform.localScale = Vector3.one * 1.3f;
+        transform.localScale = Vector3.one * 1.4f;
     }
 
     public void Deselect()

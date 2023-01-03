@@ -9,6 +9,8 @@ public class GameLoop : MonoBehaviour
     [SerializeField] private int _startTileCount = 10;
     [SerializeField] private float _travellerMoveInterval = 2f;
     [SerializeField] private float _travellerSpawnInterval = 4f;
+    [SerializeField] private float _cameraPanSpeed = 5f;
+    [SerializeField] private InputActionReference _cameraPan;
 
     private BoardView _boardView;
     private DeckView _deckView;
@@ -35,6 +37,11 @@ public class GameLoop : MonoBehaviour
 
         StartCoroutine(SpawnTravellers());
         StartCoroutine(MoveTravellers());
+    }
+
+    private void Update()
+    {
+        PanCamera();
     }
 
     private IEnumerator SpawnTravellers()
@@ -106,6 +113,12 @@ public class GameLoop : MonoBehaviour
 
         if (_board.TryGetNextPlacePosition(_pointerPosition, out Hex nextPlacePosition))
             _boardView.HighlightNextPlace(nextPlacePosition);
+    }
+
+    public void PanCamera()
+    {
+        Vector3 movement = _cameraPan.action.ReadValue<Vector2>();
+        _camera.transform.position += movement * _cameraPanSpeed * Time.deltaTime;
     }
 
     public void OnPlaceTile(InputAction.CallbackContext context)
