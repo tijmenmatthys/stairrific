@@ -8,7 +8,7 @@ public class BoardView : MonoBehaviour
     [SerializeField] private GameObject _travellerPrefab;
     [SerializeField] private GameObject _tilePrefab;
 
-    private List<TravellerView> _travellers = new List<TravellerView>();
+    private Dictionary<Traveller, TravellerView> _travellers = new Dictionary<Traveller, TravellerView>();
     private Dictionary<Hex, TileView> _tiles = new Dictionary<Hex, TileView>();
     private Dictionary<Hex, TileView> _highLightedTiles = new Dictionary<Hex, TileView>();
 
@@ -36,7 +36,7 @@ public class BoardView : MonoBehaviour
         GameObject newTraveller = Instantiate(_travellerPrefab, gameObject.transform);
         var travellerView = newTraveller.GetComponent<TravellerView>();
         travellerView.SetStartPosition(traveller.WorldPosition);
-        _travellers.Add(travellerView);
+        _travellers.Add(traveller, travellerView);
 
         traveller.Moved += travellerView.SetPosition;
         traveller.StartedMoving += travellerView.SetMoving;
@@ -45,7 +45,8 @@ public class BoardView : MonoBehaviour
 
     public void OnTravellerRemoved(Traveller traveller)
     {
-        // todo
+        Destroy(_travellers[traveller].gameObject);
+        _travellers.Remove(traveller);
     }
 
     public void HighlightValid(List<Hex> validPositions, Tile nextTile)

@@ -29,18 +29,32 @@ public class TravellerMovement
 
     public void Move()
     {
-        var travellersStuck = _travellers.Where(t => !_navigation.TryGetDirection(t.Position, t.Target, out Hex _));
-        foreach (var traveller in travellersStuck)
-            traveller.IsMoving = false;
-
-        var travellersNotStuck = _travellers.Where(t => _navigation.TryGetDirection(t.Position, t.Target, out Hex _));
-        foreach (var traveller in travellersNotStuck)
+        for (int i = _travellers.Count() - 1; i >= 0; i--)
         {
-            traveller.IsMoving = true;
-            _navigation.TryGetDirection(traveller.Position, traveller.Target, out Hex direction);
-            traveller.Move(direction);
-            if (direction != Hex.zero)
-                Debug.Log($"Traveller moved from {traveller.Position} in direction {direction} to target {traveller.Target}");
+            var t = _travellers[i];
+            bool isStuck = !_navigation.TryGetDirection(t.Position, t.Target, out Hex _);
+            if (isStuck) t.IsMoving = false;
+            else
+            {
+                _navigation.TryGetDistance(t.Position, t.Target, out int distance);
+                if (distance > 0) MoveTraveller(t);
+                else RemoveTraveller(t);
+            }
         }
+    }
+
+    private void RemoveTraveller(Traveller traveller)
+    {
+        _travellers.Remove(traveller);
+        TravellerRemoved?.Invoke(traveller);
+    }
+
+    private void MoveTraveller(Traveller traveller)
+    {
+        traveller.IsMoving = true;
+        _navigation.TryGetDirection(traveller.Position, traveller.Target, out Hex direction);
+        traveller.Move(direction);
+        if (direction != Hex.zero)
+            Debug.Log($"Traveller moved from {traveller.Position} in direction {direction} to target {traveller.Target}");
     }
 }

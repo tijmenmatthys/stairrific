@@ -20,7 +20,7 @@ public class TravellerNavigation
         return true;
     }
 
-    public bool TryGetDistanceLeft(Hex current, Hex target, out int distance)
+    public bool TryGetDistance(Hex current, Hex target, out int distance)
     {
         distance = 0;
         if (!_distances.ContainsKey(target)) return false;
