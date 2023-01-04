@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using TMPro;
 
 public class DeckView : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class DeckView : MonoBehaviour
     [SerializeField] private int _visibleTileCount = 5;
     [SerializeField] private int _selectableTileCount = 5;
     [SerializeField] private GameObject _tilePrefab;
+    [SerializeField] private TextMeshProUGUI _tilesLeftText;
 
     private List<TileViewUI> _tileViews = new List<TileViewUI>();
 
@@ -27,6 +29,7 @@ public class DeckView : MonoBehaviour
         tileView.DeckView = this;
         tileView.SetVisuals(tile);
         SetPosition(tileView, _tileViews.Count - 1);
+        UpdateText();
     }
 
     public void OnTileRemoved(int index)
@@ -37,6 +40,8 @@ public class DeckView : MonoBehaviour
         // Move position of all the next tiles
         for (int i = index; i < _tileViews.Count; i++)
             SetPosition(_tileViews[i], i);
+
+        UpdateText();
     }
 
     public void OnTileSelected(int index)
@@ -53,5 +58,11 @@ public class DeckView : MonoBehaviour
         float max = 1 - ((float)index / _visibleTileCount);
         float min = 1 - ((float)(index + 1) / _visibleTileCount);
         tileView.SetPosition(min, max);
+    }
+
+    private void UpdateText()
+    {
+        int tilesLeft = Math.Max(0, _tileViews.Count - _visibleTileCount);
+        _tilesLeftText.text = $"+{tilesLeft}";
     }
 }

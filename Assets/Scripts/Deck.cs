@@ -16,10 +16,10 @@ public class Deck
 
     public Tile SelectedTile => _deck[SelectedTileIndex];
     public int TileCount => _deck.Count;
-    private int SelectedTileIndex
+    public int SelectedTileIndex
     {
         get => _selectedTileIndex;
-        set
+        private set
         {
             _selectedTileIndex = value;
             TileSelected?.Invoke(SelectedTileIndex);

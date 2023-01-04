@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 public class GameLoop : MonoBehaviour
 {
     [SerializeField] private int _startTileCount = 10;
+    [SerializeField] private int _startDoorCount = 3;
+    [SerializeField] private int _minUnconnectedDoors = 2;
     [SerializeField] private float _travellerMoveInterval = 2f;
     [SerializeField] private float _travellerSpawnInterval = 4f;
     [SerializeField] private float _cameraPanSpeed = 5f;
@@ -14,6 +16,7 @@ public class GameLoop : MonoBehaviour
 
     private BoardView _boardView;
     private DeckView _deckView;
+    private HUDView _hudView;
 
     private Board _board;
     private Deck _deck;
@@ -30,9 +33,8 @@ public class GameLoop : MonoBehaviour
         InitViews();
         InitModels();
 
-        _board.AddTile(Hex.zero, new Tile(true));
-        _board.AddTile(new Hex(-3, -1), new Tile(true));
-        _board.AddTile(new Hex(2, 2), new Tile(true));
+        for (int i = 0; i < _startDoorCount; i++)
+            _board.AddDoor();
         _deck.AddTiles(_startTileCount);
 
         StartCoroutine(SpawnTravellers());
@@ -55,8 +57,6 @@ public class GameLoop : MonoBehaviour
             _travellerMovement.AddTraveller(source, target);
 
             yield return new WaitForSeconds(_travellerSpawnInterval);
-
-            _board.AddDoor();
         }
     }
 
@@ -74,6 +74,7 @@ public class GameLoop : MonoBehaviour
     {
         _boardView = FindObjectOfType<BoardView>();
         _deckView = FindObjectOfType<DeckView>();
+        _hudView = FindObjectOfType<HUDView>();
     }
 
     private void InitModels()
@@ -82,6 +83,7 @@ public class GameLoop : MonoBehaviour
         _board.TileAdded += _boardView.OnTileAdded;
         _board.TileAdded += (_, _)
             => _travellerNavigation.UpdateShortestPaths(_board.Tiles, _board.DoorPositions);
+        _board.TileAdded += (_,t) => UpdateDoors(t);
         _board.TileRemoved += _boardView.OnTileRemoved;
         _board.TileRemoved += (_)
             => _travellerNavigation.UpdateShortestPaths(_board.Tiles, _board.DoorPositions);
@@ -96,6 +98,20 @@ public class GameLoop : MonoBehaviour
         _travellerMovement = new TravellerMovement(_travellerNavigation);
         _travellerMovement.TravellerAdded += _boardView.OnTravellerAdded;
         _travellerMovement.TravellerRemoved += _boardView.OnTravellerRemoved;
+    }
+
+    private void UpdateDoors(Tile latestTile)
+    {
+        if (latestTile.HasDoor) return;
+
+        // if there are not enough unconnected doors, add new ones
+        int doorCount = _board.DoorPositions.Count;
+        int connectedDoorCount = _travellerNavigation.GetConnectedDoorCount();
+        int newDoorCount = Math.Max(0, connectedDoorCount - doorCount + _minUnconnectedDoors);
+        Debug.Log($"Total doors: {doorCount}, connected: {connectedDoorCount}, new needed: {newDoorCount}");
+        for (int i = 0; i < newDoorCount; i++)
+            _board.AddDoor();
+        _hudView.UpdateDoorsConnectedText(connectedDoorCount);
     }
 
     public void OnTileSelected(int index)
@@ -139,6 +155,7 @@ public class GameLoop : MonoBehaviour
         if (!context.performed) return;
 
         _board.RemoveTile(Hex.FromWorldPosition(_pointerPosition));
+        _deck.SelectTile(_deck.SelectedTileIndex); // update highlights
     }
 
     public void OnSelectPreviousTile(InputAction.CallbackContext context)

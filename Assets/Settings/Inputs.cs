@@ -42,7 +42,7 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                     ""id"": ""489b6e79-cd52-4a42-8ba9-85e5b295c598"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold"",
                     ""initialStateCheck"": true
                 },
                 {

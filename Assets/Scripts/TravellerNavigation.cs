@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class TravellerNavigation
 {
@@ -28,6 +29,25 @@ public class TravellerNavigation
 
         distance = _distances[target][current];
         return true;
+    }
+
+    public int GetConnectedDoorCount()
+    {
+        int count = 0;
+        foreach (Hex target in _directions.Keys)
+        {
+            bool isConnected = false;
+            foreach (Hex source in _directions[target].Keys)
+            {
+                if (source != target && _directions.ContainsKey(source))
+                {
+                    isConnected = true;
+                    break;
+                }
+            }
+            if (isConnected) count++;
+        }
+        return count;
     }
 
     public void UpdateShortestPaths(Dictionary<Hex, Tile> tiles, List<Hex> doors)

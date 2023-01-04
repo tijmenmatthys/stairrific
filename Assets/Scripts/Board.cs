@@ -45,9 +45,13 @@ public class Board
 
     public void AddDoor()
     {
-        List<Hex> validSpawnPositions = GetPerimeter(1);
-        int index = Random.Range(0, validSpawnPositions.Count);
-        Hex position = validSpawnPositions[index];
+        Hex position = Hex.zero;
+        if (_tiles.Count > 0)
+        {
+            List<Hex> validSpawnPositions = GetPerimeter(1);
+            int index = Random.Range(0, validSpawnPositions.Count);
+            position = validSpawnPositions[index];
+        }
         AddTile(position, new Tile(true));
     }
 

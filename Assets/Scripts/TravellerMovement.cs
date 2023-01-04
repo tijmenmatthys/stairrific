@@ -54,7 +54,5 @@ public class TravellerMovement
         traveller.IsMoving = true;
         _navigation.TryGetDirection(traveller.Position, traveller.Target, out Hex direction);
         traveller.Move(direction);
-        if (direction != Hex.zero)
-            Debug.Log($"Traveller moved from {traveller.Position} in direction {direction} to target {traveller.Target}");
     }
 }
