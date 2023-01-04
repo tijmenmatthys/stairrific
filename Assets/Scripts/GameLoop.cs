@@ -14,6 +14,7 @@ public class GameLoop : MonoBehaviour
     [SerializeField] private float _travellerSpawnInterval = 4f;
     [SerializeField] private float _cameraPanSpeed = 5f;
     [SerializeField] private InputActionReference _cameraPan;
+    [SerializeField] private Transform _pointer;
 
     private BoardView _boardView;
     private DeckView _deckView;
@@ -23,13 +24,23 @@ public class GameLoop : MonoBehaviour
     private Deck _deck;
     private TravellerMovement _travellerMovement;
     private TravellerNavigation _travellerNavigation;
+    private Vector2 _pointerPosition;
 
-    private Vector2 _pointerPosition = Vector2.zero;
+    private Vector2 PointerPosition
+    {
+        get => _pointerPosition;
+        set
+        {
+            _pointerPosition = value;
+            _pointer.position = value;
+        }
+    }
     private Camera _camera;
 
     void Start()
     {
         _camera = Camera.main;
+        PointerPosition = Vector2.zero;
 
         InitViews();
         InitModels();
@@ -84,7 +95,7 @@ public class GameLoop : MonoBehaviour
         _board.TileAdded += _boardView.OnTileAdded;
         _board.TileAdded += (_, _)
             => _travellerNavigation.UpdateShortestPaths(_board.Tiles, _board.DoorPositions);
-        _board.TileAdded += (_,t) => OnTileAdded(t);
+        _board.TileAdded += (_, t) => OnTileAdded(t);
         _board.TileRemoved += _boardView.OnTileRemoved;
         _board.TileRemoved += (_)
             => _travellerNavigation.UpdateShortestPaths(_board.Tiles, _board.DoorPositions);
@@ -120,7 +131,7 @@ public class GameLoop : MonoBehaviour
         if (!context.performed) return;
         if (IsMouseAboveUI()) return;
         if (_deck.TileCount <= 0) return;
-        if (!_board.TryGetNextPlacePosition(_pointerPosition, out Hex nextPlacePosition)) return;
+        if (!_board.TryGetNextPlacePosition(PointerPosition, out Hex nextPlacePosition)) return;
 
         _board.AddTile(nextPlacePosition, _deck.SelectedTile);
         _deck.RemoveTile();
@@ -130,7 +141,7 @@ public class GameLoop : MonoBehaviour
     {
         if (!context.performed) return;
 
-        _board.RemoveTile(Hex.FromWorldPosition(_pointerPosition));
+        _board.RemoveTile(Hex.FromWorldPosition(PointerPosition));
         _deck.SelectTile(_deck.SelectedTileIndex); // update highlights
     }
 
@@ -169,10 +180,12 @@ public class GameLoop : MonoBehaviour
 
     private void HighlightNextPlacePosition()
     {
-        var mousePosition = Mouse.current.position.ReadValue();
-        _pointerPosition = _camera.ScreenToWorldPoint(mousePosition);
+        Vector2 pointerScreenPosition = (Gamepad.all.Count == 0)
+            ? Mouse.current.position.ReadValue()
+            : _camera.ViewportToScreenPoint(new Vector3(.5f, .5f));
+        PointerPosition = _camera.ScreenToWorldPoint(pointerScreenPosition);
 
-        if (_board.TryGetNextPlacePosition(_pointerPosition, out Hex nextPlacePosition))
+        if (_board.TryGetNextPlacePosition(PointerPosition, out Hex nextPlacePosition))
             _boardView.HighlightNextPlace(nextPlacePosition);
     }
 
@@ -196,7 +209,7 @@ public class GameLoop : MonoBehaviour
 
     private bool IsMouseAboveUI()
     {
-        var viewportPosition = _camera.WorldToViewportPoint(_pointerPosition);
+        var viewportPosition = _camera.WorldToViewportPoint(PointerPosition);
         return viewportPosition.x < .2;
     }
 }
