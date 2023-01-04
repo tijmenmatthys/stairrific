@@ -29,4 +29,15 @@ public class Tile
                 HasConnection[direction] = Random.value < (_averageConnections / 6);
         } while (ConnectionCount < _minConnections);
     }
+
+    public void Rotate(bool isLeft)
+    {
+        var newConnections = new Dictionary<Hex, bool>();
+        foreach (var direction in Hex.directions)
+        {
+            var newDirection = !isLeft ? direction.RotateLeft() : direction.RotateRight();
+            newConnections.Add(newDirection, HasConnection[direction]);
+        }
+        HasConnection = newConnections;
+    }
 }

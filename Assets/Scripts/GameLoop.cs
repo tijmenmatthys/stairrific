@@ -92,6 +92,7 @@ public class GameLoop : MonoBehaviour
         _deck = new Deck(_deckView.SelectableTileCount);
         _deck.TileAdded += _deckView.OnTileAdded;
         _deck.TileRemoved += _deckView.OnTileRemoved;
+        _deck.TileModified += _deckView.OnTileModified;
         _deck.TileSelected += OnTileSelected;
         _deckView.SelectTile += _deck.SelectTile;
 
@@ -104,18 +105,14 @@ public class GameLoop : MonoBehaviour
     public void OnMovePointer(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-
-        var mousePosition = Mouse.current.position.ReadValue();
-        _pointerPosition = _camera.ScreenToWorldPoint(mousePosition);
-
-        if (_board.TryGetNextPlacePosition(_pointerPosition, out Hex nextPlacePosition))
-            _boardView.HighlightNextPlace(nextPlacePosition);
+        HighlightNextPlacePosition();
     }
 
     public void PanCamera()
     {
         Vector3 movement = _cameraPan.action.ReadValue<Vector2>();
         _camera.transform.position += movement * _cameraPanSpeed * Time.deltaTime;
+        HighlightNextPlacePosition();
     }
 
     public void OnPlaceTile(InputAction.CallbackContext context)
@@ -149,12 +146,34 @@ public class GameLoop : MonoBehaviour
         _deck.SelectNextTile();
     }
 
+    public void OnRotateTileLeft(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        _deck.RotateTile(true);
+        HighlightNextPlacePosition();
+    }
+    public void OnRotateTileRight(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        _deck.RotateTile(false);
+        HighlightNextPlacePosition();
+    }
+
     private void OnTileSelected(int index)
     {
         _board.UpdateValidPositions(_deck.SelectedTile);
         _boardView.HighlightValid(_board.ValidPositions, _deck.SelectedTile);
         _deckView.OnTileSelected(index);
 
+    }
+
+    private void HighlightNextPlacePosition()
+    {
+        var mousePosition = Mouse.current.position.ReadValue();
+        _pointerPosition = _camera.ScreenToWorldPoint(mousePosition);
+
+        if (_board.TryGetNextPlacePosition(_pointerPosition, out Hex nextPlacePosition))
+            _boardView.HighlightNextPlace(nextPlacePosition);
     }
 
     private void OnTileAdded(Tile latestTile)

@@ -53,6 +53,11 @@ public class DeckView : MonoBehaviour
             _tileViews[index].Select();
     }
 
+    internal void OnTileModified(int index, Tile tile)
+    {
+        _tileViews[index].SetVisuals(tile);
+    }
+
     private void SetPosition(TileViewUI tileView, int index)
     {
         float max = 1 - ((float)index / _visibleTileCount);

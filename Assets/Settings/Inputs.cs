@@ -80,6 +80,24 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateTileLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""b3c52da2-45f5-448e-8f6f-33e494de67c2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateTileRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""6000dbcb-beb7-4cf7-818c-b8b994c04347"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -139,7 +157,7 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""WASD"",
+                    ""name"": ""IJKL"",
                     ""id"": ""00ca640b-d935-4593-8157-c05846ea39b3"",
                     ""path"": ""Dpad"",
                     ""interactions"": """",
@@ -152,7 +170,7 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""up"",
                     ""id"": ""e2062cb9-1b15-46a2-838c-2f8d72a0bdd9"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""path"": ""<Keyboard>/i"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -174,7 +192,7 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""down"",
                     ""id"": ""320bffee-a40b-4347-ac70-c210eb8bc73a"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""path"": ""<Keyboard>/k"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -196,7 +214,7 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""d2581a9b-1d11-4566-b27d-b92aff5fabbc"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/j"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -218,7 +236,7 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""fcfe95b8-67b9-4526-84b5-5d0bc98d6400"",
-                    ""path"": ""<Keyboard>/d"",
+                    ""path"": ""<Keyboard>/l"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -245,6 +263,17 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Joystick"",
                     ""action"": ""PanCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""086c8918-2c40-44bb-bbb5-eb40ba47b8d9"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlaceTile"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -306,7 +335,7 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""fb48b806-c0e7-49d7-ab10-1cc4d2287df7"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -328,7 +357,7 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""105adaba-f37d-4785-b382-009cff446884"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -366,6 +395,50 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""RemoveTile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""920640be-c6cb-4eb0-be1f-d13d757a76fa"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""RotateTileLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a98160c0-849c-4b35-b4ab-f069a66da915"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""RotateTileLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d034129c-83c6-418a-abd0-9aa69c812aeb"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""RotateTileRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9854212e-cbc7-4dcf-9459-3b1fc1d74463"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""RotateTileRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -959,6 +1032,8 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
         m_Player_RemoveTile = m_Player.FindAction("RemoveTile", throwIfNotFound: true);
         m_Player_SelectPreviousTile = m_Player.FindAction("SelectPreviousTile", throwIfNotFound: true);
         m_Player_SelectNextTile = m_Player.FindAction("SelectNextTile", throwIfNotFound: true);
+        m_Player_RotateTileLeft = m_Player.FindAction("RotateTileLeft", throwIfNotFound: true);
+        m_Player_RotateTileRight = m_Player.FindAction("RotateTileRight", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1036,6 +1111,8 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_RemoveTile;
     private readonly InputAction m_Player_SelectPreviousTile;
     private readonly InputAction m_Player_SelectNextTile;
+    private readonly InputAction m_Player_RotateTileLeft;
+    private readonly InputAction m_Player_RotateTileRight;
     public struct PlayerActions
     {
         private @Inputs m_Wrapper;
@@ -1046,6 +1123,8 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
         public InputAction @RemoveTile => m_Wrapper.m_Player_RemoveTile;
         public InputAction @SelectPreviousTile => m_Wrapper.m_Player_SelectPreviousTile;
         public InputAction @SelectNextTile => m_Wrapper.m_Player_SelectNextTile;
+        public InputAction @RotateTileLeft => m_Wrapper.m_Player_RotateTileLeft;
+        public InputAction @RotateTileRight => m_Wrapper.m_Player_RotateTileRight;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1073,6 +1152,12 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                 @SelectNextTile.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSelectNextTile;
                 @SelectNextTile.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSelectNextTile;
                 @SelectNextTile.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSelectNextTile;
+                @RotateTileLeft.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateTileLeft;
+                @RotateTileLeft.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateTileLeft;
+                @RotateTileLeft.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateTileLeft;
+                @RotateTileRight.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateTileRight;
+                @RotateTileRight.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateTileRight;
+                @RotateTileRight.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateTileRight;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1095,6 +1180,12 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
                 @SelectNextTile.started += instance.OnSelectNextTile;
                 @SelectNextTile.performed += instance.OnSelectNextTile;
                 @SelectNextTile.canceled += instance.OnSelectNextTile;
+                @RotateTileLeft.started += instance.OnRotateTileLeft;
+                @RotateTileLeft.performed += instance.OnRotateTileLeft;
+                @RotateTileLeft.canceled += instance.OnRotateTileLeft;
+                @RotateTileRight.started += instance.OnRotateTileRight;
+                @RotateTileRight.performed += instance.OnRotateTileRight;
+                @RotateTileRight.canceled += instance.OnRotateTileRight;
             }
         }
     }
@@ -1257,6 +1348,8 @@ public partial class @Inputs : IInputActionCollection2, IDisposable
         void OnRemoveTile(InputAction.CallbackContext context);
         void OnSelectPreviousTile(InputAction.CallbackContext context);
         void OnSelectNextTile(InputAction.CallbackContext context);
+        void OnRotateTileLeft(InputAction.CallbackContext context);
+        void OnRotateTileRight(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

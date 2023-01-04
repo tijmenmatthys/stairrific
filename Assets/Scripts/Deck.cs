@@ -9,6 +9,7 @@ public class Deck
     public event Action<Tile> TileAdded;
     public event Action<int> TileRemoved;
     public event Action<int> TileSelected;
+    public event Action<int, Tile> TileModified;
 
     private int _selectableTileCount;
     private List<Tile> _deck = new List<Tile>();
@@ -73,5 +74,12 @@ public class Deck
         if (index < 0 || index >= _selectableTileCount) return;
 
         SelectedTileIndex = index;
+    }
+
+    public void RotateTile(bool isLeft)
+    {
+        SelectedTile.Rotate(isLeft);
+        TileModified?.Invoke(SelectedTileIndex, SelectedTile);
+        SelectedTileIndex = SelectedTileIndex;
     }
 }
