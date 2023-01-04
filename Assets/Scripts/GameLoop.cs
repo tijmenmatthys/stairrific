@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class GameLoop : MonoBehaviour
 {
     [SerializeField] private int _startTileCount = 10;
+    [SerializeField] private int _newTilesPerConnectedDoor = 4;
     [SerializeField] private int _startDoorCount = 3;
     [SerializeField] private int _minUnconnectedDoors = 2;
     [SerializeField] private float _travellerMoveInterval = 2f;
@@ -83,7 +84,7 @@ public class GameLoop : MonoBehaviour
         _board.TileAdded += _boardView.OnTileAdded;
         _board.TileAdded += (_, _)
             => _travellerNavigation.UpdateShortestPaths(_board.Tiles, _board.DoorPositions);
-        _board.TileAdded += (_,t) => UpdateDoors(t);
+        _board.TileAdded += (_,t) => OnTileAdded(t);
         _board.TileRemoved += _boardView.OnTileRemoved;
         _board.TileRemoved += (_)
             => _travellerNavigation.UpdateShortestPaths(_board.Tiles, _board.DoorPositions);
@@ -98,28 +99,6 @@ public class GameLoop : MonoBehaviour
         _travellerMovement = new TravellerMovement(_travellerNavigation);
         _travellerMovement.TravellerAdded += _boardView.OnTravellerAdded;
         _travellerMovement.TravellerRemoved += _boardView.OnTravellerRemoved;
-    }
-
-    private void UpdateDoors(Tile latestTile)
-    {
-        if (latestTile.HasDoor) return;
-
-        // if there are not enough unconnected doors, add new ones
-        int doorCount = _board.DoorPositions.Count;
-        int connectedDoorCount = _travellerNavigation.GetConnectedDoorCount();
-        int newDoorCount = Math.Max(0, connectedDoorCount - doorCount + _minUnconnectedDoors);
-        Debug.Log($"Total doors: {doorCount}, connected: {connectedDoorCount}, new needed: {newDoorCount}");
-        for (int i = 0; i < newDoorCount; i++)
-            _board.AddDoor();
-        _hudView.UpdateDoorsConnectedText(connectedDoorCount);
-    }
-
-    public void OnTileSelected(int index)
-    {
-        _board.UpdateValidPositions(_deck.SelectedTile);
-        _boardView.HighlightValid(_board.ValidPositions, _deck.SelectedTile);
-        _deckView.OnTileSelected(index);
-
     }
 
     public void OnMovePointer(InputAction.CallbackContext context)
@@ -168,6 +147,32 @@ public class GameLoop : MonoBehaviour
     {
         if (!context.performed) return;
         _deck.SelectNextTile();
+    }
+
+    private void OnTileSelected(int index)
+    {
+        _board.UpdateValidPositions(_deck.SelectedTile);
+        _boardView.HighlightValid(_board.ValidPositions, _deck.SelectedTile);
+        _deckView.OnTileSelected(index);
+
+    }
+
+    private void OnTileAdded(Tile latestTile)
+    {
+        if (latestTile.HasDoor) return;
+
+        // if there are not enough unconnected doors, add new ones
+        int doorCount = _board.DoorPositions.Count;
+        int connectedDoorCount = _travellerNavigation.GetConnectedDoorCount();
+        int newDoorCount = Math.Max(0, connectedDoorCount - doorCount + _minUnconnectedDoors);
+        Debug.Log($"Total doors: {doorCount}, connected: {connectedDoorCount}, new needed: {newDoorCount}");
+        for (int i = 0; i < newDoorCount; i++)
+        {
+            _board.AddDoor();
+            _deck.AddTiles(_newTilesPerConnectedDoor);
+        }
+
+        _hudView.UpdateDoorsConnectedText(connectedDoorCount);
     }
 
     private bool IsMouseAboveUI()
