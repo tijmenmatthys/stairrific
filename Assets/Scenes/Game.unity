@@ -743,7 +743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startTileCount: 10
-  _newTilesPerConnectedDoor: 4
+  _newTilesPerConnectedDoor: 3
   _startDoorCount: 5
   _minUnconnectedDoors: 4
   _travellerMoveInterval: 1
@@ -1131,6 +1131,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 160041978}
     m_Modifications:
+    - target: {fileID: 8248640707735052107, guid: 060137534ad6e5d48909dcb60b14c486, type: 3}
+      propertyPath: _visibleTileCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8248640707735052107, guid: 060137534ad6e5d48909dcb60b14c486, type: 3}
+      propertyPath: _selectableTileCount
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 8248640707735052108, guid: 060137534ad6e5d48909dcb60b14c486, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
